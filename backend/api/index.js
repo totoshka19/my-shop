@@ -6,10 +6,20 @@ const { PRODUCTS } = require('../data/products');
 const app = express();
 
 app.use(cors()); // Включаем CORS
+app.use(express.json());
 
 app.get('/api/products', (req, res) => {
   // В реальном приложении здесь была бы логика получения данных из базы
   res.json(PRODUCTS); // Отправляем массив товаров в формате JSON
+});
+
+// Get single product by ID
+app.get('/api/products/:id', (req, res) => {
+  const product = PRODUCTS.find(p => p.id === Number(req.params.id));
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+  res.json(product);
 });
 
 // Vercel ожидает экспортированную функцию-обработчик

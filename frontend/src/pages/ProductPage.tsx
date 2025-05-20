@@ -1,14 +1,40 @@
 import { useParams } from 'react-router-dom';
-import { PRODUCTS } from '../constants';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button/Button';
 import { cartStore } from '../store/cartStore';
 import type { Product } from '../types/types';
 
 function ProductPage() {
   const { id } = useParams();
-  const product = PRODUCTS.find((p: Product) => p.id === Number(id));
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!product) {
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/products/${id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error("Fetching product failed:", error);
+        setError('Failed to load product.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  }
+
+  if (error || !product) {
     return <div className="container mx-auto px-4 py-8">Product not found</div>;
   }
 
