@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { PRODUCTS } from '../constants';
 import Button from '../components/Button/Button';
@@ -23,7 +22,7 @@ function ProductPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <img
-              src={product.imageUrl} 
+              src={product.imageUrl}
               alt={product.name}
               className="w-full h-96 object-cover rounded-lg"
             />
@@ -47,4 +46,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage; 
+export default ProductPage;

@@ -1,4 +1,3 @@
-import React from 'react';
 import ProductList from '../components/ProductList/ProductList';
 import styles from '../components/Layout/Layout.module.css';
 

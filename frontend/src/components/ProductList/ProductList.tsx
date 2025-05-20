@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
-import { PRODUCTS, BREAKPOINT_3XL, ITEMS_PER_PAGE_MD_UP, ITEMS_PER_PAGE_3XL_UP } from '../../constants';
+import { BREAKPOINT_3XL, ITEMS_PER_PAGE_MD_UP, ITEMS_PER_PAGE_3XL_UP } from '../../constants';
 import Pagination from '../Pagination/Pagination';
 import { usePagination } from '../../hooks/usePagination';
 import type { Product } from '../../types/types';
@@ -101,4 +101,4 @@ function ProductList() {
   );
 }
 
-export default ProductList; 
+export default ProductList;

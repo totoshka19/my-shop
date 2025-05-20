@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Product } from '../../types/types';
 import { formatPrice } from '../../utils';
@@ -35,4 +34,4 @@ function ProductCard({ product }: ProductCardProps) {
   );
 }
 
-export default ProductCard; 
+export default ProductCard;

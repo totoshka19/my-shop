@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '../Button/Button';
 
 export type SortOrder = 'asc' | 'desc' | null;
@@ -12,7 +11,7 @@ function SortOptions({ onSortChange, currentSort }: SortOptionsProps) {
   return (
     <div className="flex items-center gap-4 mb-6">
       <span className="font-semibold">Sort by Price:</span>
-      <Button 
+      <Button
         onClick={() => onSortChange('asc')}
         className={`p-2 ${
           currentSort === 'asc'
@@ -24,7 +23,7 @@ function SortOptions({ onSortChange, currentSort }: SortOptionsProps) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
         </svg>
       </Button>
-      <Button 
+      <Button
         onClick={() => onSortChange('desc')}
         className={`p-2 ${
           currentSort === 'desc'
@@ -50,4 +49,4 @@ function SortOptions({ onSortChange, currentSort }: SortOptionsProps) {
   );
 }
 
-export default SortOptions; 
+export default SortOptions;
