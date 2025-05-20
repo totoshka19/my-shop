@@ -5,7 +5,13 @@ const { PRODUCTS } = require('../data/products');
 // Создаем Express приложение, но не запускаем его через app.listen()
 const app = express();
 
-app.use(cors()); // Включаем CORS
+// Настраиваем CORS для разрешения запросов с фронтенда
+app.use(cors({
+  origin: 'http://localhost:5173', // URL вашего фронтенда
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
+
 app.use(express.json());
 
 app.get('/api/products', (req, res) => {
