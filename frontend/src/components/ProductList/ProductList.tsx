@@ -5,6 +5,7 @@ import Pagination from '../Pagination/Pagination';
 import { usePagination } from '../../hooks/usePagination';
 import type { Product } from '../../types/types';
 import SortOptions, { type SortOrder } from '../SortOptions/SortOptions';
+import Spinner from '../Spinner/Spinner';
 
 function ProductList() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -76,7 +77,7 @@ function ProductList() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading products...</div>;
+    return <div className="text-center py-8"><Spinner /></div>;
   }
 
   if (error) {

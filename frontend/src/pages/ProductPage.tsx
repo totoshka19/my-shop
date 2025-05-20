@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '../components/Button/Button';
 import { cartStore } from '../store/cartStore';
 import type { Product } from '../types/types';
+import Spinner from '../components/Spinner/Spinner';
 
 function ProductPage() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ function ProductPage() {
   }, [id]);
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return <div className="container mx-auto px-4 py-8 text-center"><Spinner /></div>;
   }
 
   if (error || !product) {
