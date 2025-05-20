@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { PRODUCTS } = require('../../frontend/src/constants'); // Подключение констант с товарами
+const { PRODUCTS } = require('../data/products');
 
 // Создаем Express приложение, но не запускаем его через app.listen()
 const app = express();
