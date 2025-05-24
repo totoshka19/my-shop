@@ -1,4 +1,5 @@
 export const MAX_CART_ITEMS = 50;
+export const MAX_ITEMS_PER_PRODUCT = 10;
 
 export const BREAKPOINT_3XL = 1600;
 export const BREAKPOINT_SM = 640; // Tailwind's sm breakpoint

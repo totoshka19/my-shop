@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { MAX_CART_ITEMS } from '../constants';
+import {MAX_CART_ITEMS, MAX_ITEMS_PER_PRODUCT} from '../constants';
 import type { Product } from '../types/types';
 
 export interface CartItem extends Omit<Product, 'description'> {
@@ -41,6 +41,9 @@ class CartStore {
     }
 
     if (this.items[productId]) {
+      if (this.items[productId] >= MAX_ITEMS_PER_PRODUCT) {
+        return;
+      }
       this.items[productId]++;
     } else {
       this.items[productId] = 1;
@@ -50,11 +53,8 @@ class CartStore {
 
   removeItem(productId: number) {
     if (this.items[productId]) {
-      this.items[productId]--;
-      if (this.items[productId] === 0) {
-        delete this.items[productId];
-        delete this.products[productId];
-      }
+      delete this.items[productId];
+      delete this.products[productId];
     }
   }
 
@@ -67,6 +67,10 @@ class CartStore {
     if (quantity <= 0) {
       this.removeItem(productId);
       return;
+    }
+
+    if (quantity > MAX_ITEMS_PER_PRODUCT) {
+      quantity = MAX_ITEMS_PER_PRODUCT;
     }
 
     if (this.totalItems - (this.items[productId] || 0) + quantity > MAX_CART_ITEMS) {
