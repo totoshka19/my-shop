@@ -26,15 +26,17 @@ function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="border border-gray-300 rounded-lg p-4 shadow-sm">
+    <div className="border border-gray-300 rounded-lg shadow-sm">
       <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-t-lg" />
-      <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-      <p className="text-gray-600">{formattedPrice}</p>
-      <p className="text-sm text-gray-500 mt-1">{product.description}</p>
-      <div className="mt-4 flex space-x-2">
-        <Button onClick={handleOpenProduct} className="w-1/2 border border-custom-taupe-medium bg-white text-custom-taupe-dark hover:bg-custom-pink-extra-light">Details</Button>
-        <Button onClick={handleAddToCart} className="w-1/2 bg-custom-taupe-medium hover:bg-custom-taupe-dark text-white">Add&nbsp;to&nbsp;Cart</Button>
-      </div>
+        <div className="p-4">
+            <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
+            <p className="text-gray-600">{formattedPrice}</p>
+            <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+            <div className="mt-4 flex space-x-2">
+                <Button onClick={handleOpenProduct} className="w-1/2 border border-custom-taupe-medium bg-white text-custom-taupe-dark hover:bg-custom-pink-extra-light">Details</Button>
+                <Button onClick={handleAddToCart} className="w-1/2 bg-custom-taupe-medium hover:bg-custom-taupe-dark text-white">Add&nbsp;to&nbsp;Cart</Button>
+            </div>
+        </div>
     </div>
   );
 }

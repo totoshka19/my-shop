@@ -61,7 +61,7 @@ const ProductPage = observer(() => {
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="w-full md:w-1/2 object-cover rounded-lg shadow-md"
+          className="w-full md:w-1/2 object-cover h-72 rounded-lg shadow-md"
         />
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
