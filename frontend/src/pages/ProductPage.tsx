@@ -1,36 +1,37 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { formatPrice } from '../utils';
 import Button from '../components/Button/Button';
 import { cartStore } from '../store/cartStore';
 import Spinner from '../components/Spinner/Spinner';
-import type { Product } from '../types/types';
+import { useLocation } from 'react-router-dom';
+import { breadcrumbStore } from '../store/breadcrumbStore';
+import { observer } from 'mobx-react-lite';
+import { productStore } from '../store/productStore';
 
-function ProductPage() {
-  const { productId } = useParams<{ productId: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const ProductPage = observer(() => {
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(segment => segment);
+  const productId = pathSegments[1];
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const apiBase = import.meta.env.VITE_BACKEND_URL || '';
-        const response = await fetch(`${apiBase}/api/products/${productId}`);
-        if (!response.ok) {
-          throw new Error('Product not found');
-        }
-        const data: Product = await response.json();
-        setProduct(data);
-      } catch (error) {
-        setError('Failed to load product.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    const id = Number(productId);
+    if (isNaN(id) || id <= 0) {
+      breadcrumbStore.setProductBreadcrumb(null);
+      return;
+    }
 
-    fetchProduct();
+    productStore.fetchProduct(id);
   }, [productId]);
+
+  useEffect(() => {
+    if (productStore.product) {
+      breadcrumbStore.setProductBreadcrumb(productStore.product.name);
+    } else {
+      breadcrumbStore.setProductBreadcrumb(null);
+    }
+  }, [productStore.product]);
+
+  const { product, loading, error } = productStore;
 
   if (loading) {
     return <div className="text-center py-8"><Spinner /></div>;
@@ -77,6 +78,6 @@ function ProductPage() {
       </div>
     </div>
   );
-}
+});
 
 export default ProductPage;

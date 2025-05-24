@@ -1,45 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import {BreadcrumbItem} from "../../types/types";
+import type { BreadcrumbItem } from "../../types/types";
+import { observer } from 'mobx-react-lite';
+import { breadcrumbStore } from '../../store/breadcrumbStore';
 
-function Breadcrumbs() {
+const Breadcrumbs = observer(() => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
-  const [productName, setProductName] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchProductName = async () => {
-      setError(null);
-      if (pathnames[0] === 'product' && pathnames[1]) {
-        try {
-          const apiBase = import.meta.env.VITE_BACKEND_URL || '';
-          const response = await fetch(`${apiBase}/api/products/${pathnames[1]}`);
-          if (!response.ok) {
-             setError('Failed to load product information.');
-             return;
-          }
-          const product = await response.json();
-          setProductName(product.name);
-        } catch (error) {
-          setError('An error occurred while loading product information.');
-        }
-      }
-    };
-
-    fetchProductName();
-  }, [pathnames]);
+  const { productName } = breadcrumbStore;
 
   if (location.pathname === '/') {
     return null;
-  }
-
-  if (error) {
-    return (
-      <nav className="py-4">
-        <div className="text-red-600 text-sm">{error}</div>
-      </nav>
-    );
   }
 
   if (pathnames[0] === 'product' && pathnames.length === 2) {
@@ -107,6 +77,6 @@ function Breadcrumbs() {
       </ol>
     </nav>
   );
-}
+});
 
 export default Breadcrumbs;
