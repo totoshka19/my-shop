@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { formatPrice } from '../utils';
 import Button from '../components/Button/Button';
 import { cartStore } from '../store/cartStore';
-import type { Product } from '../types/types';
 import Spinner from '../components/Spinner/Spinner';
-import { formatPrice } from '../utils';
+import type { Product } from '../types/types';
 
 function ProductPage() {
-  const { id } = useParams();
+  const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,14 +16,13 @@ function ProductPage() {
     const fetchProduct = async () => {
       try {
         const apiBase = import.meta.env.VITE_BACKEND_URL || '';
-        const response = await fetch(`${apiBase}/api/products/${id}`);
+        const response = await fetch(`${apiBase}/api/products/${productId}`);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Product not found');
         }
-        const data = await response.json();
+        const data: Product = await response.json();
         setProduct(data);
       } catch (error) {
-        console.error("Fetching product failed:", error);
         setError('Failed to load product.');
       } finally {
         setLoading(false);
@@ -31,14 +30,18 @@ function ProductPage() {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [productId]);
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-8 text-center"><Spinner /></div>;
+    return <div className="text-center py-8"><Spinner /></div>;
   }
 
-  if (error || !product) {
-    return <div className="container mx-auto px-4 py-8">Product not found</div>;
+  if (error) {
+    return <div className="text-center py-8 text-red-600">{error}</div>;
+  }
+
+  if (!product) {
+    return <div className="text-center py-8">Product not found.</div>;
   }
 
   const handleAddToCart = () => {
@@ -50,30 +53,26 @@ function ProductPage() {
     });
   };
 
+  const formattedPrice = formatPrice(product.price);
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="w-full h-96 object-cover rounded-lg"
-            />
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-            <p className="text-2xl font-semibold text-gray-800 mb-4">
-              {formatPrice(product.price)}
-            </p>
-            <p className="text-gray-600 mb-6">{product.description}</p>
-            <Button
-              onClick={handleAddToCart}
-              className="w-full bg-custom-taupe-medium hover:bg-custom-taupe-dark text-white"
-            >
-              Add&nbsp;to&nbsp;Cart
-            </Button>
-          </div>
+    <div className="container mx-auto py-8">
+      <div className="flex flex-col md:flex-row gap-8">
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          className="w-full md:w-1/2 object-cover rounded-lg shadow-md"
+        />
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          <p className="text-xl text-gray-700 mb-4">{formattedPrice}</p>
+          <p className="text-gray-600 mb-6">{product.description}</p>
+          <Button
+            onClick={handleAddToCart}
+            className="bg-custom-taupe-medium hover:bg-custom-taupe-dark text-white"
+          >
+            Add to Cart
+          </Button>
         </div>
       </div>
     </div>

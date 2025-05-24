@@ -3,6 +3,7 @@ import { cartStore } from '../../store/cartStore';
 import type { CartItem as CartItemType } from '../../store/cartStore';
 import { formatPrice } from '../../utils';
 import { MAX_ITEMS_PER_PRODUCT } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 interface CartItemProps {
   item: CartItemType;
@@ -11,18 +12,25 @@ interface CartItemProps {
 const CartItem = observer(({ item }: CartItemProps) => {
   const isMinQuantity = item.quantity <= 1;
   const isMaxQuantity = item.quantity >= MAX_ITEMS_PER_PRODUCT;
+  const navigate = useNavigate();
 
   const handleRemove = () => {
     cartStore.updateQuantity(item.id, 0);
   };
 
+  const handleImageClick = () => {
+    navigate(`/product/${item.id}`);
+  };
+
   return (
     <div key={item.id} className="flex items-center gap-4 py-4 border-b last:border-b-0">
-      <img
-        src={item.imageUrl}
-        alt={item.name}
-        className="w-20 h-20 object-cover rounded-lg"
-      />
+      <div className="cursor-pointer" onClick={handleImageClick}>
+        <img
+          src={item.imageUrl}
+          alt={item.name}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+      </div>
       <div className="flex-grow">
         <h3 className="font-medium text-lg">{item.name}</h3>
         <p className="text-gray-600">{formatPrice(item.price)}</p>
