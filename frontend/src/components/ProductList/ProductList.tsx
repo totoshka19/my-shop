@@ -36,7 +36,7 @@ function ProductList() {
         }
         const data: Product[] = await response.json();
         setProducts(data);
-      } catch (err) {
+      } catch {
         setError('Failed to load products.');
       } finally {
         setLoading(false);
