@@ -30,7 +30,7 @@ class ProductStore {
       runInAction(() => {
         this.product = data;
       });
-    } catch (err: any) {
+    } catch {
       runInAction(() => {
         this.error = 'Failed to load product.';
       });

@@ -21,17 +21,16 @@ const ProductPage = observer(() => {
     }
 
     productStore.fetchProduct(id);
+    breadcrumbStore.setProductBreadcrumb(null);
   }, [productId]);
 
-  useEffect(() => {
-    if (productStore.product) {
-      breadcrumbStore.setProductBreadcrumb(productStore.product.name);
-    } else {
-      breadcrumbStore.setProductBreadcrumb(null);
-    }
-  }, [productStore.product]);
-
   const { product, loading, error } = productStore;
+
+  useEffect(() => {
+    if (product) {
+      breadcrumbStore.setProductBreadcrumb(product.name);
+    }
+  }, [product]);
 
   if (loading) {
     return <div className="text-center py-8"><Spinner /></div>;

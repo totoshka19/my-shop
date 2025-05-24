@@ -15,7 +15,7 @@ const Breadcrumbs = observer(() => {
   if (pathnames[0] === 'product' && pathnames.length === 2) {
     const breadcrumbs: BreadcrumbItem[] = [
       { label: 'Home', path: '/' },
-      { label: productName || 'Loading...', path: location.pathname },
+      { label: productName || '', path: location.pathname },
     ];
 
     return (
