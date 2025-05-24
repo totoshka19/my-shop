@@ -4,6 +4,7 @@ import Button from '../components/Button/Button';
 import { cartStore } from '../store/cartStore';
 import type { Product } from '../types/types';
 import Spinner from '../components/Spinner/Spinner';
+import { formatPrice } from '../utils';
 
 function ProductPage() {
   const { id } = useParams();
@@ -14,7 +15,8 @@ function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`);
+        const apiBase = import.meta.env.VITE_BACKEND_URL || '';
+        const response = await fetch(`${apiBase}/api/products/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -40,7 +42,12 @@ function ProductPage() {
   }
 
   const handleAddToCart = () => {
-    cartStore.addItem(product.id);
+    cartStore.addItem(product.id, {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl
+    });
   };
 
   return (
@@ -57,7 +64,7 @@ function ProductPage() {
           <div className="flex flex-col">
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <p className="text-2xl font-semibold text-gray-800 mb-4">
-              ${product.price.toLocaleString('en-US')}
+              {formatPrice(product.price)}
             </p>
             <p className="text-gray-600 mb-6">{product.description}</p>
             <Button

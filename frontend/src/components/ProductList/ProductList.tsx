@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
-import { BREAKPOINT_3XL, ITEMS_PER_PAGE_MD_UP, ITEMS_PER_PAGE_3XL_UP } from '../../constants';
+import { BREAKPOINT_3XL, BREAKPOINT_SM, ITEMS_PER_PAGE_MOBILE, ITEMS_PER_PAGE_MD_UP, ITEMS_PER_PAGE_3XL_UP } from '../../constants';
 import Pagination from '../Pagination/Pagination';
 import { usePagination } from '../../hooks/usePagination';
 import type { Product } from '../../types/types';
@@ -21,24 +21,24 @@ function ProductList() {
 
     window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); // Empty dependency array means this effect runs only once on mount and cleans up on unmount
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
+        const apiBase = import.meta.env.VITE_BACKEND_URL || '';
+        const response = await fetch(`${apiBase}/api/products`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: Product[] = await response.json();
         setProducts(data);
-      } catch (error) {
-        console.error("Fetching products failed:", error);
+      } catch (err) {
         setError('Failed to load products.');
+        console.error('Error fetching products:', err);
       } finally {
         setLoading(false);
       }
@@ -47,10 +47,14 @@ function ProductList() {
     fetchProducts();
   }, []);
 
-  const itemsPerPage = screenWidth < BREAKPOINT_3XL ? ITEMS_PER_PAGE_MD_UP : ITEMS_PER_PAGE_3XL_UP;
+  const itemsPerPage = screenWidth < BREAKPOINT_SM 
+    ? ITEMS_PER_PAGE_MOBILE 
+    : screenWidth < BREAKPOINT_3XL 
+      ? ITEMS_PER_PAGE_MD_UP 
+      : ITEMS_PER_PAGE_3XL_UP;
 
   const sortedProducts = useMemo(() => {
-    let sortableProducts = [...products];
+    const sortableProducts = [...products];
     if (sortOrder === 'asc') {
       sortableProducts.sort((a, b) => a.price - b.price);
     } else if (sortOrder === 'desc') {
@@ -73,7 +77,7 @@ function ProductList() {
 
   const handleSortChange = (order: SortOrder) => {
     setSortOrder(order);
-    setPage(1); // Reset to first page on sort change
+    setPage(1);
   };
 
   if (loading) {

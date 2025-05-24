@@ -2,11 +2,13 @@ import styles from '../Layout/Layout.module.css';
 import Button from '../Button/Button';
 import { observer } from 'mobx-react-lite';
 import { cartStore } from '../../store/cartStore';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
+
   const handleCartClick = () => {
-    // Cart page navigation logic
-    console.log('Navigate to cart');
+    navigate('/cart');
   };
 
   return (
@@ -44,4 +46,5 @@ function Header() {
   );
 }
 
-export default observer(Header);
+const HeaderComponent = observer(Header);
+export default HeaderComponent;

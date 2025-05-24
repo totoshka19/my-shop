@@ -35,7 +35,7 @@ function SortOptions({ onSortChange, currentSort }: SortOptionsProps) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
         </svg>
       </Button>
-       {currentSort && (
+      {currentSort && (
         <Button
           onClick={() => onSortChange(null)}
           className="p-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
