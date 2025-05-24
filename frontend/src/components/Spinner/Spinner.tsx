@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Spinner() {
   return (
     <div className="flex justify-center items-center">
@@ -8,4 +6,4 @@ function Spinner() {
   );
 }
 
-export default Spinner; 
+export default Spinner;
