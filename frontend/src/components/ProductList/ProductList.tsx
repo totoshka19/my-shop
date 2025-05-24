@@ -38,7 +38,6 @@ function ProductList() {
         setProducts(data);
       } catch (err) {
         setError('Failed to load products.');
-        console.error('Error fetching products:', err);
       } finally {
         setLoading(false);
       }
@@ -47,10 +46,10 @@ function ProductList() {
     fetchProducts();
   }, []);
 
-  const itemsPerPage = screenWidth < BREAKPOINT_SM 
-    ? ITEMS_PER_PAGE_MOBILE 
-    : screenWidth < BREAKPOINT_3XL 
-      ? ITEMS_PER_PAGE_MD_UP 
+  const itemsPerPage = screenWidth < BREAKPOINT_SM
+    ? ITEMS_PER_PAGE_MOBILE
+    : screenWidth < BREAKPOINT_3XL
+      ? ITEMS_PER_PAGE_MD_UP
       : ITEMS_PER_PAGE_3XL_UP;
 
   const sortedProducts = useMemo(() => {
