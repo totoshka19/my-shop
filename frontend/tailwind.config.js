@@ -13,8 +13,8 @@ export default {
         'custom-taupe-dark': '#6F5F5E',
       },
       screens: {
-        'xl_custom': '1290px',
-        '3xl': '1600px',
+        'xl_custom': '1290px', // Custom breakpoint for 1290px
+        '3xl': '1600px', // Custom breakpoint for 1600px
       },
     },
   },

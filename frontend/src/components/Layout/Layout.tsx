@@ -1,7 +1,6 @@
 import { type ReactNode } from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 import styles from './Layout.module.css';
 
 interface LayoutProps {
@@ -13,10 +12,7 @@ function Layout({ children }: LayoutProps) {
     <div className={`${styles.layoutContainer} bg-white text-gray-900 flex flex-col min-h-screen`}>
       <Header />
       <main className={`${styles.mainContent} flex-grow`}>
-        <div className={styles.container}>
-          <Breadcrumbs />
-          {children}
-        </div>
+        {children}
       </main>
       <Footer />
     </div>

@@ -1,4 +1,3 @@
-export const formatPrice = (price: number | undefined): string => {
-  if (price === undefined) return '$0.00';
+export const formatPrice = (price: number): string => {
   return `$${price.toLocaleString('en-US')}`;
 }; 

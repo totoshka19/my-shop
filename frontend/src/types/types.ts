@@ -5,8 +5,3 @@ export type Product = {
   price: number;
   imageUrl: string;
 };
-
-export type BreadcrumbItem = {
-  label: string;
-  path: string;
-};
