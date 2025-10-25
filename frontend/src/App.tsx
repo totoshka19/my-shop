@@ -31,4 +31,5 @@ function App() {
   )
 }
 
-export default observer(App)
+const AppComponent = observer(App);
+export default AppComponent;
