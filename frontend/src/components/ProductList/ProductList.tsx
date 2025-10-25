@@ -32,7 +32,7 @@ function ProductList() {
   const itemsPerPage = screenWidth < BREAKPOINT_3XL ? ITEMS_PER_PAGE_MD_UP : ITEMS_PER_PAGE_3XL_UP;
 
   const sortedProducts = useMemo(() => {
-    let sortableProducts = [...products];
+    const sortableProducts = [...products];
     if (sortOrder === 'asc') {
       sortableProducts.sort((a, b) => a.price - b.price);
     } else if (sortOrder === 'desc') {
