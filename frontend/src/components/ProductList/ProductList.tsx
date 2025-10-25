@@ -14,7 +14,6 @@ function ProductList() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<SortOrder>(null);
 
-  // Используем useQuery для загрузки данных
   const { data: products = [], isLoading, isError } = useQuery<Product[]>({
     queryKey: ['products'],
     queryFn: fetchProducts,
@@ -42,6 +41,7 @@ function ProductList() {
     return sortableProducts;
   }, [sortOrder, products]);
 
+  // ИЗМЕНЕНИЕ ЗДЕСЬ: убрали неиспользуемые "items", "nextPage", "prevPage"
   const {
     currentPage,
     totalPages,
@@ -56,7 +56,7 @@ function ProductList() {
 
   const handleSortChange = (order: SortOrder) => {
     setSortOrder(order);
-    setPage(1); // Reset to first page on sort change
+    setPage(1);
   };
 
   if (isLoading) {
