@@ -24,8 +24,14 @@ class CartStore {
     }
   }
 
-  removeItem(productId: number) {
-    if (this.items[productId]) {
+  removeItem(productId: number, removeAll: boolean = false) {
+    if (!this.items[productId]) {
+      return; // Товар не в корзине
+    }
+
+    if (removeAll) {
+      delete this.items[productId];
+    } else {
       this.items[productId]--;
       if (this.items[productId] === 0) {
         delete this.items[productId];

@@ -1,32 +1,64 @@
 const express = require('express');
 const cors = require('cors');
-const { PRODUCTS } = require('../data/products');
+const { PrismaClient } = require('@prisma/client'); // <-- Импортируем Prisma
 
-// Создаем Express приложение, но не запускаем его через app.listen()
+// Создаем экземпляр Prisma Client
+const prisma = new PrismaClient();
 const app = express();
 
-// Настраиваем CORS для разрешения запросов с фронтенда
-app.use(cors({
-  origin: 'http://localhost:5173', // URL вашего фронтенда
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
-}));
-
+// Настраиваем CORS. Можно оставить как есть для локальной разработки.
+app.use(cors()); // Для Vercel можно сделать более простым
 app.use(express.json());
 
-app.get('/api/products', (req, res) => {
-  // В реальном приложении здесь была бы логика получения данных из базы
-  res.json(PRODUCTS); // Отправляем массив товаров в формате JSON
+// Эндпоинт для получения ВСЕХ товаров из базы данных
+app.get('/api/products', async (req, res) => {
+  try {
+    // Используем Prisma для запроса всех записей из таблицы Product
+    const products = await prisma.product.findMany();
+    res.json(products);
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
 });
 
-// Get single product by ID
-app.get('/api/products/:id', (req, res) => {
-  const product = PRODUCTS.find(p => p.id === Number(req.params.id));
-  if (!product) {
-    return res.status(404).json({ error: 'Product not found' });
+// Эндпоинт для получения ОДНОГО товара по ID из базы данных
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Используем Prisma для поиска уникальной записи по ID
+    const product = await prisma.product.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error(`Failed to fetch product with id ${req.params.id}:`, error);
+    res.status(500).json({ error: 'Failed to fetch product' });
   }
-  res.json(product);
 });
+
+/*
+  Здесь в будущем вы можете добавить новые эндпоинты,
+  например, для создания заказа, добавления товара и т.д.
+
+  // Пример эндпоинта для создания товара (для тестирования)
+  app.post('/api/products', async (req, res) => {
+    try {
+      const { name, description, price, imageUrl } = req.body;
+      const newProduct = await prisma.product.create({
+        data: { name, description, price, imageUrl },
+      });
+      res.status(201).json(newProduct);
+    } catch (error) {
+      console.error('Failed to create product:', error);
+      res.status(500).json({ error: 'Failed to create product' });
+    }
+  });
+*/
 
 // Vercel ожидает экспортированную функцию-обработчик
 module.exports = app;
