@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "trailingSlash": false,
   "builds": [
     {
       "src": "frontend/package.json",
@@ -23,4 +24,4 @@
       "dest": "frontend/$1"
     }
   ]
-} 
+}
