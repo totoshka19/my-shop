@@ -20,10 +20,6 @@
     {
       "src": "/api/(.*)",
       "dest": "backend/api/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
     }
   ]
 }
